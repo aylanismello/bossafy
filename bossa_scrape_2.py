@@ -8,7 +8,7 @@ class BossaScrapeSpider(scrapy.Spider):
   def parse(self, response):
       title = response.css('.g-side-ad h1::text').extract_first()
       if title:
-        #   we know the artist
+        #   we know the artist already
         #   artist = response.css('.g-side-ad h2::text').extract_first()
           key = response.xpath('//span[@id="cifra_tom"]/a/text()').extract_first()
           chords = response.xpath('//pre//b/text()').extract()
