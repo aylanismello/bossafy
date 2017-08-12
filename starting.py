@@ -1,7 +1,6 @@
-import random, sys
+import random, sys, json
 from IPython import embed
 from collections import defaultdict
-
 from treat_chords import chord_to_relative, relative_to_chord
 
 
@@ -13,7 +12,7 @@ except IndexError as err:
 
 KEY = KEY.upper()
 
-with open('./chord_corpus.txt') as chords:
+with open('./data/chord_corpus.txt') as chords:
     CORPUS = chords.read().split(' ')
 
 prev_chord = '.'
@@ -24,6 +23,9 @@ for chord in CORPUS:
         distribution[prev_chord].append(chord)
         prev_chord = chord
 
+def print_chord_vertically(chord):
+    for note in chord.split(' '):
+        print note
 
 def next_chord(chord, key):
     """Get next chord"""
@@ -35,9 +37,21 @@ def next_chord(chord, key):
     else:
         return '.'
 
+try:
+    with open('./data/chord_dict.json', 'r') as file_data:
+        chord_dict = json.load(file_data)
+except:
+    print 'could not open chord dictionary, failing'
+    exit()
+
 current_chord = '.'
 while True:
     current_chord = next_chord(current_chord, KEY)
-    print current_chord
     if current_chord == '.':
         break
+    if current_chord not in chord_dict.keys():
+        print current_chord + ' not in dict!!'
+        continue
+    print current_chord + ': '
+    print_chord_vertically(chord_dict[current_chord])
+    print '\n\n'
