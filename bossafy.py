@@ -9,9 +9,16 @@ class Bossafy(object):
     CHORDS_FILE_PATH = './data/metadata/chord_dict.json'
     SCRAPED_SONGS_DIR_PATH = './data/song_scrapes/'
 
-    def __init__(self):
-        self.scrape_songs()
-        self.scrape_chord_definitions()
+    def __init__(self, **kwargs):
+        if kwargs.get('prep'):
+            if kwargs.get('scrape'):
+                self.scrape_songs()
+            if kwargs.get('define_chords'):
+                # maybe move this into its own module
+                self.scrape_chord_definitions()
+
+        # begin prompt
+        print 'Done Bossafy-ing!'
 
     def open_or_create_chord_dict(self):
         try:
@@ -42,7 +49,6 @@ class Bossafy(object):
         with open(self.CHORDS_FILE_PATH, 'w') as data_file:
             json.dump(self.chord_dict, data_file, sort_keys=True, indent=2)
 
-
     def scrape_songs(self):
         with open(self.ARTISTS_FILE_PATH) as data_file:
             self.all_artists = json.load(data_file)['artists']
@@ -57,7 +63,6 @@ class Bossafy(object):
             self.scrape_chords(formatted_artist, url)
 
     def scrape_chords(self, artist, url):
-        # check if this file exists first
         NEW_FILE_NAME = "./data/song_scrapes/%s-scrape.json" % (artist)
         if not os.path.isfile(NEW_FILE_NAME):
             command = "scrapy runspider ./scrapes/bossafy_scraper.py -a url=%s -a artist_name=%s -o %s" % (url, artist, NEW_FILE_NAME)
@@ -83,4 +88,5 @@ class Bossafy(object):
             self.chord_dict[chord_name] = chord_tab
         print 'added chord-tab definitions from ' + url
 
+# Bossafy(scrape=False, define_chords=False)
 Bossafy()
