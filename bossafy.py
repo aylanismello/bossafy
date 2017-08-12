@@ -29,7 +29,7 @@ class Bossafy(object):
         # check if this file exists first
         NEW_FILE_NAME = "./data/song_scrapes/%s-scrape.json" % (artist)
         if not os.path.isfile(NEW_FILE_NAME):
-            command = "scrapy runspider ./bossafy_scraper.py -a url=%s -a artist_name=%s -o %s" % (url, artist, NEW_FILE_NAME)
+            command = "scrapy runspider ./scrapes/bossafy_scraper.py -a url=%s -a artist_name=%s -o %s" % (url, artist, NEW_FILE_NAME)
             subprocess.check_output(command, shell=True)
         else:
             print '%s already scraped!' % (NEW_FILE_NAME)
