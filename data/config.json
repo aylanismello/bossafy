@@ -1,7 +1,7 @@
 {
 	"artists": {
-		"bossa": ["tom jobim", "elis regina", "chico buarque", "caetano veloso", "joao gilberto", "roberta sa", "dorival caymmi"],
-		"jazz": ["charlie byrd"]
-	}
-
+		"bossa": [
+		"elis regina",
+		"joao gilberto"]
+}
 }
