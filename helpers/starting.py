@@ -1,5 +1,4 @@
 import random, sys, json
-from IPython import embed
 from collections import defaultdict
 from treat_chords import chord_to_relative, relative_to_chord
 

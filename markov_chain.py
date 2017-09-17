@@ -1,5 +1,4 @@
 import random, sys, json, constants
-from IPython import embed
 from collections import defaultdict
 
 class MarkovChain(object):

@@ -1,7 +1,6 @@
 import constants, json
 import re
 from bottle import route, run, template, request, static_file
-from IPython import embed
 from bossafy import Bossafy
 
 

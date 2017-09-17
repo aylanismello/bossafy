@@ -4,7 +4,6 @@ from markov_chain import MarkovChain
 import os
 from selenium import webdriver
 from collections import defaultdict
-from IPython import embed
 # from treat_chords import chord_to_relative, relative_to_chord
 
 class Bossafy(object):
