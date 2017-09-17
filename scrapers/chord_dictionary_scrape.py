@@ -36,20 +36,20 @@ def chords_in_tab_form():
             for song in scraped_songs:
                 urls.append(song['url'])
     except:
-        print 'CANNOT OPEN' + SCRAPED_SONGS
+        print('CANNOT OPEN' + SCRAPED_SONGS)
 
     try:
         with open(CHORDS_FILE_NAME, 'r') as file_data:
             chord_tab_dict = json.load(file_data)
     except:
-        print 'could not open' + CHORDS_FILE_NAME + ', making new file'
+        print('could not open' + CHORDS_FILE_NAME + ', making new file')
         chord_tab_dict = {}
 
     for url in urls:
         driver.get(url)
         chords = driver.find_elements_by_css_selector('.chord')
         chord_tab_dict = add_song_chords_to_dict(chords, chord_tab_dict)
-        print 'added songs from ' + url
+        print('added songs from ' + url)
 
     with open(CHORDS_FILE_NAME, 'w') as file_data:
         json.dump(chord_tab_dict, file_data, sort_keys=True, indent=2)

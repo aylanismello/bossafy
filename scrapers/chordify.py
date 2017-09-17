@@ -24,8 +24,8 @@ with open('./relative_chord_corpus.txt', 'w') as data_file:
 
             # CHECK IF chord_to_relative is really an inverse of relative_to_chord
 
-            chord = chord.replace(u'\xb0', 'dim')
-            chord = chord.replace(u'\xba', 'dim')
+            chord = chord.replace('\xb0', 'dim')
+            chord = chord.replace('\xba', 'dim')
             # data_file.write(chord_to_relative(chord, song['key']) + '\n')
             relative_chord = chord_to_relative(chord, song['key'])
             if(relative_chord != relative_to_chord(relative_chord, song['key'])):

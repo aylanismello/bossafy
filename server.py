@@ -6,7 +6,7 @@ from bossafy import Bossafy
 
 
 def get_structured_chords(chord_data):
-    chords = chord_data.keys()
+    chords = list(chord_data.keys())
     all_chord_types = set()
     possible_roots = ['Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G' ]
     root_notes = ['Ab', 'Bb', 'C#', 'Db', 'Eb', 'F#', 'Gb' ]
@@ -25,7 +25,7 @@ def get_structured_chords(chord_data):
                 if potential_new_chord in possible_roots:
                     chords_by_type[chord_type].append(potential_new_chord)
 
-    return {k: v for k, v in chords_by_type.items() if len(v) == 12}
+    return {k: v for k, v in list(chords_by_type.items()) if len(v) == 12}
 
 
 @route('/')

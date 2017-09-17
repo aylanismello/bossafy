@@ -5,7 +5,7 @@ import os
 from selenium import webdriver
 from collections import defaultdict
 from IPython import embed
-from treat_chords import chord_to_relative, relative_to_chord
+# from treat_chords import chord_to_relative, relative_to_chord
 
 class Bossafy(object):
 
@@ -28,7 +28,7 @@ class Bossafy(object):
         #     self.get_user_input()
 
         # begin prompt
-        print 'Done Bossafy-ing!'
+        print('Done Bossafy-ing!')
 
     def get_user_input(self, chord, chord_type):
         # chord = raw_input('Is chord in TAB form or CHORD form?  0 to exit.\n')
@@ -76,41 +76,41 @@ class Bossafy(object):
         # print 'try %s ( %s ) as a next chord for %s' % (new_chord, new_tab, chord)
         return { 'name': new_chord, 'tab': new_tab }
 
-    def update_chord_corpus(self):
-        for filename in os.listdir(constants.SCRAPED_SONGS_DIR_PATH):
-            with open("%s%s" % (constants.SCRAPED_SONGS_DIR_PATH, filename), 'r') as scraped_song_file:
-                scraped_data = json.load(scraped_song_file)
-                print 'opened %s' % (filename)
-
-            with open(constants.CHORD_CORPUS_PATH, 'w') as corpus_file:
-                print 'going to write chord corpus!'
-                for song in [song for song in scraped_data if song['chords'] and song['key']]:
-                    for chord in song['chords']:
-                        # refactor this BS plz
-                        chord = chord.replace(u'\xb0', 'dim')
-                        chord = chord.replace(u'\xba', 'dim')
-                        chord = chord.replace(u'\xe9', 'dim')
-                        chord = chord.replace(u'\xea', 'dim')
-                        chord = chord.replace(u'\xf3', 'dim')
-                        chord = chord.replace(u'\xe3', 'dim')
-                        chord = chord.replace(u'\xe1', 'dim')
-                        chord = chord.replace(u'\xe7', 'dim')
-                        chord = chord.replace(u'\u2019', 'dim')
-                        chord = chord.replace(u'\u2028', 'dim')
-                        # relative_chord = chord_to_relative(chord, song['key'])
-                        # corpus_file.write('%s ' % (relative_chord))
-
-                        corpus_file.write('%s ' % (chord))
-                        # check for weird cases here
-                    # put end of song delimter mark of . here
-                    corpus_file.write('. ')
+    # def update_chord_corpus(self):
+    #     for filename in os.listdir(constants.SCRAPED_SONGS_DIR_PATH):
+    #         with open("%s%s" % (constants.SCRAPED_SONGS_DIR_PATH, filename), 'r') as scraped_song_file:
+    #             scraped_data = json.load(scraped_song_file)
+    #             print('opened %s' % (filename))
+    #
+    #         with open(constants.CHORD_CORPUS_PATH, 'w') as corpus_file:
+    #             print('going to write chord corpus!')
+    #             for song in [song for song in scraped_data if song['chords'] and song['key']]:
+    #                 for chord in song['chords']:
+    #                     # refactor this BS plz
+    #                     chord = chord.replace('\xb0', 'dim')
+    #                     chord = chord.replace('\xba', 'dim')
+    #                     chord = chord.replace('\xe9', 'dim')
+    #                     chord = chord.replace('\xea', 'dim')
+    #                     chord = chord.replace('\xf3', 'dim')
+    #                     chord = chord.replace('\xe3', 'dim')
+    #                     chord = chord.replace('\xe1', 'dim')
+    #                     chord = chord.replace('\xe7', 'dim')
+    #                     chord = chord.replace('\u2019', 'dim')
+    #                     chord = chord.replace('\u2028', 'dim')
+    #                     # relative_chord = chord_to_relative(chord, song['key'])
+    #                     # corpus_file.write('%s ' % (relative_chord))
+    #
+    #                     corpus_file.write('%s ' % (chord))
+    #                     # check for weird cases here
+    #                 # put end of song delimter mark of . here
+    #                 corpus_file.write('. ')
 
     def open_or_create_chord_dict(self):
         try:
             with open(constants.CHORDS_FILE_PATH, 'r') as data_file:
                 chord_dict = json.load(data_file)
         except:
-            print 'could not open %s, making new file' % (constants.CHORDS_FILE_PATH)
+            print('could not open %s, making new file' % (constants.CHORDS_FILE_PATH))
             chord_dict = {}
         return chord_dict
 
@@ -126,7 +126,7 @@ class Bossafy(object):
                 urls_dict[filename.split('.')[0]] = [song['url'] for song in json.load(scraped_song_file)]
 
         # create/add to chord_dict
-        for _, urls in urls_dict.iteritems():
+        for _, urls in urls_dict.items():
             for url in urls:
                 self.add_song_chords_to_dict(url)
             break
@@ -139,7 +139,7 @@ class Bossafy(object):
         with open(constants.ARTISTS_FILE_PATH) as data_file:
             self.all_artists = json.load(data_file)['artists']
 
-        for genre in self.all_artists.keys():
+        for genre in list(self.all_artists.keys()):
             self.scrape_all_artists(genre)
 
     def scrape_all_artists(self, genre):
@@ -154,7 +154,7 @@ class Bossafy(object):
             command = "scrapy runspider ./scrapes/bossafy_scraper.py -a url=%s -a artist_name=%s -o %s" % (url, artist, NEW_FILE_NAME)
             subprocess.check_output(command, shell=True)
         else:
-            print '%s already scraped!' % (NEW_FILE_NAME)
+            print('%s already scraped!' % (NEW_FILE_NAME))
 
     def add_song_chords_to_dict(self, url):
         self.driver.get(url)
@@ -172,7 +172,7 @@ class Bossafy(object):
                 continue
 
             self.chord_dict[chord_name] = chord_tab
-        print 'added chord-tab definitions from ' + url
+        print('added chord-tab definitions from ' + url)
 
 # Bossafy(define_chords=True, prep=True)
 # Bossafy()

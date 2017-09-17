@@ -19,7 +19,7 @@ class MarkovChain(object):
         return distribution
 
     def next_chord(self, chord):
-        if chord in self.distribution.keys():
+        if chord in list(self.distribution.keys()):
             return random.choice(self.distribution.get(chord))
         else:
             return '.'
