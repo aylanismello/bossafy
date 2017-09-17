@@ -18,66 +18,63 @@ class Bossafy(object):
                 self.scrape_chord_definitions()
 
         # corpus seems to recreated everytime here
-        self.update_chord_corpus()
+        # self.update_chord_corpus()
         self.markov_chain = MarkovChain()
 
         self.chord_dict = self.open_or_create_chord_dict()
 
-        while True:
-            self.get_user_input()
+        # the user input function will become the logic in an endpoint
+        # while True:
+        #     self.get_user_input()
 
         # begin prompt
         print 'Done Bossafy-ing!'
 
+    def get_user_input(self, chord, chord_type):
+        # chord = raw_input('Is chord in TAB form or CHORD form?  0 to exit.\n')
+        #
+        # if chord == '0':
+        #     exit()
 
-    def get_user_input(self):
-        next_chord = raw_input('Is chord in TAB form or CHORD form?  0 to exit.\n')
+        if chord_type.lower() == 'chord':
+            tab = self.chord_dict.get(chord)
+            # self.loop_over_new_chords(chord_or_tab)
+            return self.get_next_chord(chord)
 
-        if next_chord == '0':
-            exit()
+        # elif chord_type.lower() == 'tab':
+        #     chord_or_tab = raw_input('Input tab. Must be in form 3x333x \n')
+        #     # if it's in the same form as stored in dictionary, that's cool too
+        #     if len(chord_or_tab) == 11:
+        #         formatted_tab = chord_or_tab
+        #     else:
+        #         tab_chars = [c for c in chord_or_tab[:6]]
+        #         formatted_tab = ' '.join(tab_chars).upper()
+        #
+        #     try:
+        #         chord = self.chord_dict.keys()[self.chord_dict.values().index(formatted_tab)]
+        #     except ValueError as err:
+        #         print 'tab form of chord not found in chord dictionary!'
 
-        if next_chord.lower() == 'chord':
-            chord_or_tab = raw_input('Input chord \n')
-            tab = self.chord_dict.get(chord_or_tab)
-            print 'tab of %s' % (tab)
-            self.print_next_chord(chord_or_tab)
-        elif next_chord.lower() == 'tab':
-            chord_or_tab = raw_input('Input tab. Must be in form 3x333x \n')
-            # if it's in the same form as stored in dictionary, that's cool too
-            if len(chord_or_tab) == 11:
-                formatted_tab = chord_or_tab
-            else:
-                tab_chars = [c for c in chord_or_tab[:6]]
-                formatted_tab = ' '.join(tab_chars).upper()
 
-            try:
-                chord = self.chord_dict.keys()[self.chord_dict.values().index(formatted_tab)]
-            except ValueError as err:
-                print 'tab form of chord not found in chord dictionary!'
-                self.get_user_input()
-            # now we try to get the next chord from our n-gram of 2
+    # def loop_over_new_chords(self, chord):
+    #     # last_chord = self.print_next_chord(chord)
+    #     #
+    #     # try_again = True
+    #     #
+    #     # while try_again:
+    #     #     wants_another_chord = raw_input('want another chord? y/n/NEW \n or to get a new chord from this one? ')
+    #     #     if wants_another_chord.lower() == 'new':
+    #     #         last_chord = self.print_next_chord(last_chord)
+    #     #     else:
+    #     #         try_again = True if (wants_another_chord.lower() != 'n') else False
+    #     #         if try_again:
+    #     #             self.print_next_chord(chord)
 
-            self.loop_over_new_chords(chord)
-
-    def loop_over_new_chords(self, chord):
-        last_chord = self.print_next_chord(chord)
-
-        try_again = True
-
-        while try_again:
-            wants_another_chord = raw_input('want another chord? y/n/NEW \n or to get a new chord from this one? ')
-            if wants_another_chord.lower() == 'new':
-                last_chord = self.print_next_chord(last_chord)
-            else:
-                try_again = True if (wants_another_chord.lower() != 'n') else False
-                if try_again:
-                    self.print_next_chord(chord)
-
-    def print_next_chord(self, chord):
+    def get_next_chord(self, chord):
         new_chord = self.markov_chain.next_chord(chord)
         new_tab = self.chord_dict.get(new_chord)
-        print 'try %s ( %s ) as a next chord for %s' % (new_chord, new_tab, chord)
-        return new_chord
+        # print 'try %s ( %s ) as a next chord for %s' % (new_chord, new_tab, chord)
+        return { 'name': new_chord, 'tab': new_tab }
 
     def update_chord_corpus(self):
         for filename in os.listdir(constants.SCRAPED_SONGS_DIR_PATH):
@@ -117,13 +114,14 @@ class Bossafy(object):
             chord_dict = {}
         return chord_dict
 
-
     def scrape_chord_definitions(self):
         self.chord_dict = self.open_or_create_chord_dict()
         self.driver = webdriver.PhantomJS()
         urls_dict = {}
 
         for filename in os.listdir(constants.SCRAPED_SONGS_DIR_PATH):
+            if 'chico' in filename or 'tom' in filename:
+                continue
             with open("%s%s" % (constants.SCRAPED_SONGS_DIR_PATH, filename), 'r') as scraped_song_file:
                 urls_dict[filename.split('.')[0]] = [song['url'] for song in json.load(scraped_song_file)]
 
@@ -138,7 +136,7 @@ class Bossafy(object):
             json.dump(self.chord_dict, data_file, sort_keys=True, indent=2)
 
     def scrape_songs(self):
-        with open(self.ARTISTS_FILE_PATH) as data_file:
+        with open(constants.ARTISTS_FILE_PATH) as data_file:
             self.all_artists = json.load(data_file)['artists']
 
         for genre in self.all_artists.keys():
@@ -176,5 +174,5 @@ class Bossafy(object):
             self.chord_dict[chord_name] = chord_tab
         print 'added chord-tab definitions from ' + url
 
-# Bossafy(scrape=False, define_chords=True, prep=True)
-Bossafy()
+# Bossafy(define_chords=True, prep=True)
+# Bossafy()

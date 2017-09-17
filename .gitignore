@@ -1,3 +1,7 @@
 *.pyc
 *.log
 *.ipynb_checkpoints
+node_modules/
+client/bundle.js*
+.sass-cache/
+Untitled.ipynb
