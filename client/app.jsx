@@ -15,6 +15,7 @@ import {
 } from 'semantic-ui-react';
 import ChordsTable from './components/chords_table';
 import NextChord from './components/next_chord';
+import MySearch from './components/my_search';
 
 const LoaderExampleLoader = ({ loading }) => (
 	<Segment inverted style={{ height: '200px' }}>
@@ -68,7 +69,6 @@ class App extends React.Component {
 	}
 
 	fetchNextChordAgain() {
-		debugger;
 		this.fetchNextChord(this.state.currentChord);
 	}
 
@@ -80,14 +80,9 @@ class App extends React.Component {
 			<Container inverted>
 				<Segment
 					attached="top"
-					style={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'baseline'
-					}}
 				>
-					<Flag name="br" />
-					<Header as="h1" color="green">Bossafy</Header>
+				<Image centered size="small" src="/static/bossafy_logo.png" />
+
 				</Segment>
 
 				<Segment attached="bottom">
@@ -99,7 +94,7 @@ class App extends React.Component {
 						color="teal"
 						value={chordCount}
 						label="chords and counting"
-						size="small"
+						size="tiny"
 					/>
 				</Segment>
 				{this.state.currentChord
@@ -110,12 +105,12 @@ class App extends React.Component {
 						/>
 					: null}
 
-				<Form>
-					<Form.Field>
-						<label>Pick Chord!</label>
-						<input />
-					</Form.Field>
-				</Form>
+				<label>Pick Chord!</label>
+				<MySearch
+					chords={this.state.chords}
+					fetchNextChord={currentChord => this.fetchNextChord(currentChord)}
+				/>
+
 				<label> Need help picking a chord to start with ?</label>
 				<ChordsTable
 					chords={this.state.structuredChords || {}}

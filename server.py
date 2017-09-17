@@ -57,4 +57,4 @@ def server_static(filepath):
     return static_file(filepath, root='./client/')
 
 
-run(host='localhost', port=3001, reloader=True)
+run(host='localhost', port=80, reloader=True)
