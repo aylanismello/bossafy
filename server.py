@@ -1,5 +1,4 @@
-import constants, json
-import re
+import constants, json, re, os
 from bottle import route, run, template, request, static_file
 from bossafy import Bossafy
 
@@ -56,4 +55,7 @@ def server_static(filepath):
     return static_file(filepath, root='./client/')
 
 
-run(host='localhost', port=80, reloader=True)
+if os.environ.get('APP_LOCATION') == 'heroku':
+    run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+else:
+    run(host='localhost', port=8080, reloader=True)
