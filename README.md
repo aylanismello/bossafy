@@ -4,14 +4,11 @@ This is a README
 
 
 ### Installation instructions
-- Install pyenv with
 
-``` pip install pyenv```
+Make sure you have pipenv install.
 
-Follow along at https://github.com/pyenv/pyenv.
+``` pip install pipenv ```
 
-- install required packages
-
-``` pip install -r requirements.txt ```
+``` pipenv --three ```
 
 - edit artists you want to add you your corpus in `/data/config.json`
