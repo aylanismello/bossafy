@@ -33,7 +33,7 @@ const Row = ({ chordType, chordDict, fetchNextChord }) => {
 };
 
 const ChordsTable = ({ chords, chordDict, fetchNextChord }) => (
-	<Table celled collapsing sortable color="teal" textAlign="center" columns="12">
+	<Table celled collapsing color="teal" textAlign="center" columns="12">
 		<Table.Header>
 			<Table.Row>
 				{rootNotes.map(rootNote => (

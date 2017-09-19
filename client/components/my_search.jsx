@@ -91,8 +91,8 @@ export default class MySearch extends Component {
 		return _.filter(this.state.source, isMatch)
 			.sort(item => {
 				if (
-					item.title === formattedValue[0] ||
-					item.description === formattedValue[0]
+					item.title[0] === formattedValue[0] ||
+					item.description[0] === formattedValue[0]
 				) {
 					return 1;
 				} else {
@@ -111,6 +111,7 @@ export default class MySearch extends Component {
 				onResultSelect={this.handleResultSelect}
 				onSearchChange={this.handleSearchChange}
 				results={results}
+				placeholder="Am7 or 5x555x"
 				value={value}
 			/>
 		);

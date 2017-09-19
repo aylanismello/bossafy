@@ -12,7 +12,8 @@ import {
 	Dimmer,
 	Flag,
 	Reveal,
-	Button
+	Button,
+	Label
 } from 'semantic-ui-react';
 import ChordsTable from './components/chords_table';
 import NextChord from './components/next_chord';
@@ -32,10 +33,6 @@ const LoaderExampleLoader = ({ loading }) => (
 		<Image src="/assets/images/wireframe/short-paragraph.png" />
 	</Segment>
 );
-
-const selectedButtonStyle = {
-	fontWeight: 'bold'
-};
 
 class App extends React.Component {
 	constructor(props) {
@@ -86,14 +83,6 @@ class App extends React.Component {
 		};
 	}
 
-	toggleChordType(nextChordType) {
-		if (this.state.chordType !== nextChordType) {
-			this.setState({
-				chordType: nextChordType
-			});
-		}
-	}
-
 	render() {
 		const chordCount = this.state.chords
 			? Object.keys(this.state.chords).length
@@ -126,50 +115,13 @@ class App extends React.Component {
 					: null}
 
 				<Segment>
-					<label>Pick Chord!</label>
 					<MySearch
 						chordDict={this.state.chords}
 						chordType={this.state.chordType}
 						value={this.state.currentChord}
 						fetchNextChord={currentChord => this.fetchNextChord(currentChord)}
 					/>
-
-					<Container>
-						<Button
-							toggle
-							className="bossafy-button"
-							active={this.state.chordType === CHORD_TYPES.NAME}
-							style={
-								this.state.chordType === CHORD_TYPES.NAME
-									? selectedButtonStyle
-									: {}
-							}
-							basic
-							color="teal"
-							onClick={() => this.toggleChordType(CHORD_TYPES.NAME)}
-						>
-							NAME
-						</Button>
-						<Button
-							toggle
-							className="bossafy-button"
-							active={this.state.chordType === CHORD_TYPES.TAB}
-							style={
-								this.state.chordType === CHORD_TYPES.TAB
-									? selectedButtonStyle
-									: {}
-							}
-							basic
-							color="teal"
-							onClick={() =>
-								this.toggleChordType(CHORD_TYPES.TAB)
-									? selectedButtonStyle
-									: {}}
-						>
-							TAB
-						</Button>
-
-					</Container>
+					<Label as='a' basic pointing>Pick a Chord</Label>
 				</Segment>
 
 				<label> Need help picking a chord to start with ?</label>
