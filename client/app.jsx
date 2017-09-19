@@ -130,6 +130,7 @@ class App extends React.Component {
 					<MySearch
 						chordDict={this.state.chords}
 						chordType={this.state.chordType}
+						value={this.state.currentChord}
 						fetchNextChord={currentChord => this.fetchNextChord(currentChord)}
 					/>
 

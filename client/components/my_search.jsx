@@ -12,33 +12,30 @@ export default class MySearch extends Component {
 		this.handleResultSelect = this.handleResultSelect.bind(this);
 		this.handleSearchChange = this.handleSearchChange.bind(this);
 		this.state = {
-			source: {}
+			source: {},
+			results: null,
+			value: null,
+			isLoading: false
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
+		if (nextProps.value !== this.props.value) {
+			this.handleSearchChange(undefined, { value: nextProps.value });
+		}
+
 		if (
 			(!this.props.chordDict && nextProps.chordDict) ||
 			nextProps.chordType !== this.props.chordType
 		) {
-			if (nextProps.chordType === CHORD_TYPES.NAME) {
-				this.setState({
-					source: Object.keys(nextProps.chordDict).map(chord => {
-						return {
-							title: chord,
-							description: nextProps.chordDict[chord]
-						};
-					})
-				});
-			} else {
-				this.setState({
-					source: Object.keys(nextProps.chordDict).map(chord => {
-						return {
-							title: nextProps[chord]
-						};
-					})
-				});
-			}
+			this.setState({
+				source: Object.keys(nextProps.chordDict).map(chord => {
+					return {
+						title: chord,
+						description: nextProps.chordDict[chord]
+					};
+				})
+			});
 		}
 	}
 
@@ -55,20 +52,54 @@ export default class MySearch extends Component {
 		this.props.fetchNextChord(result.title);
 	}
 
+	formatTab(tab) {
+		return tab.split(' ').join('').toLowerCase();
+	}
+
+	viewSorting(before, after) {
+		console.log('pre-sort');
+		console.log(before);
+		console.log('post-sort');
+		console.log(after);
+	}
+
 	handleSearchChange(e, { value }) {
 		this.setState({ isLoading: true, value });
 
 		setTimeout(() => {
 			if (this.state.value.length < 1) return this.resetComponent();
 
-			const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-			const isMatch = result => re.test(result.title);
+			const formattedValue = this.formatTab(this.state.value);
+			// to check effectiveness of sorting, uncomment
+			// this.viewSorting(_.filter(this.state.source, isMatch), this.getResults());
 
 			this.setState({
 				isLoading: false,
-				results: _.filter(this.state.source, isMatch).slice(5)
+				results: this.getResults(formattedValue)
 			});
 		}, 500);
+	}
+
+	getResults(formattedValue = this.state.value) {
+		const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+		const isMatch = result => {
+			return (
+				re.test(result.title) || re.test(this.formatTab(result.description))
+			);
+		};
+
+		return _.filter(this.state.source, isMatch)
+			.sort(item => {
+				if (
+					item.title === formattedValue[0] ||
+					item.description === formattedValue[0]
+				) {
+					return 1;
+				} else {
+					return -1;
+				}
+			})
+			.slice(0, 5);
 	}
 
 	render() {
@@ -81,7 +112,6 @@ export default class MySearch extends Component {
 				onSearchChange={this.handleSearchChange}
 				results={results}
 				value={value}
-				{...this.props}
 			/>
 		);
 	}
