@@ -11,11 +11,13 @@ import {
 	Loader,
 	Dimmer,
 	Flag,
-	Reveal
+	Reveal,
+	Button
 } from 'semantic-ui-react';
 import ChordsTable from './components/chords_table';
 import NextChord from './components/next_chord';
 import MySearch from './components/my_search';
+import { CHORD_TYPES } from './util/constants';
 
 const LoaderExampleLoader = ({ loading }) => (
 	<Segment inverted style={{ height: '200px' }}>
@@ -27,6 +29,10 @@ const LoaderExampleLoader = ({ loading }) => (
 	</Segment>
 );
 
+const selectedButtonStyle = {
+	fontWeight: 'bold'
+};
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -35,7 +41,8 @@ class App extends React.Component {
 			structuredChords: undefined,
 			loading: true,
 			nextChord: undefined,
-			currentChord: undefined
+			currentChord: undefined,
+			chordType: CHORD_TYPES.NAME
 		};
 	}
 
@@ -53,7 +60,7 @@ class App extends React.Component {
 		this.setState({ loading: true, currentChord });
 		axios
 			.get('/next_chord', {
-				params: { chord: currentChord }
+				params: { chord: currentChord, chord_type: this.state.chordType }
 			})
 			.then(response => {
 				const { name, tab } = response.data;
@@ -69,7 +76,18 @@ class App extends React.Component {
 	}
 
 	fetchNextChordAgain() {
-		this.fetchNextChord(this.state.currentChord);
+		return {
+			fromCurrent: () => this.fetchNextChord(this.state.currentChord),
+			fromNext: () => this.fetchNextChord(this.state.nextChord.name)
+		};
+	}
+
+	toggleChordType(nextChordType) {
+		if (this.state.chordType !== nextChordType) {
+			this.setState({
+				chordType: nextChordType
+			});
+		}
 	}
 
 	render() {
@@ -78,10 +96,8 @@ class App extends React.Component {
 			: '?';
 		return (
 			<Container inverted>
-				<Segment
-					attached="top"
-				>
-				<Image centered size="small" src="/static/bossafy_logo.png" />
+				<Segment attached="top">
+					<Image centered size="small" src="/static/bossafy_logo.png" />
 
 				</Segment>
 
@@ -101,15 +117,53 @@ class App extends React.Component {
 					? <NextChord
 							chord={this.state.nextChord || {}}
 							currentChord={this.state.currentChord}
-							fetchNextChordAgain={() => this.fetchNextChordAgain()}
+							fetchNextChordAgain={this.fetchNextChordAgain()}
 						/>
 					: null}
 
 				<label>Pick Chord!</label>
 				<MySearch
 					chords={this.state.chords}
+					chordType={this.state.chordType}
 					fetchNextChord={currentChord => this.fetchNextChord(currentChord)}
 				/>
+
+				<Container>
+					<span> Search by chord </span>
+
+					<Button
+						toggle
+						className="bossafy-button"
+						active={this.state.chordType === CHORD_TYPES.NAME}
+						style={
+							this.state.chordType === CHORD_TYPES.NAME
+								? selectedButtonStyle
+								: {}
+						}
+						basic
+						color="teal"
+						onClick={() => this.toggleChordType(CHORD_TYPES.NAME)}
+					>
+						NAME
+					</Button>
+					<Button
+						toggle
+						className="bossafy-button"
+						active={this.state.chordType === CHORD_TYPES.TAB}
+						style={
+							this.state.chordType === CHORD_TYPES.TAB
+								? selectedButtonStyle
+								: {}
+						}
+						basic
+						color="teal"
+						onClick={() =>
+							this.toggleChordType(CHORD_TYPES.TAB) ? selectedButtonStyle : {}}
+					>
+						TAB
+					</Button>
+
+				</Container>
 
 				<label> Need help picking a chord to start with ?</label>
 				<ChordsTable

@@ -35,7 +35,7 @@ class Bossafy(object):
         # if chord == '0':
         #     exit()
 
-        if chord_type.lower() == 'chord':
+        if chord_type.lower() == 'name':
             tab = self.chord_dict.get(chord)
             # self.loop_over_new_chords(chord_or_tab)
             return self.get_next_chord(chord)

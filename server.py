@@ -35,7 +35,7 @@ def next_chord():
     # return template('gonna look up %s' % (request.query.get('chord')))
     chord, chord_type = request.query.get('chord'), request.query.get('chord_type')
     if not chord_type:
-        chord_type = 'chord'
+        chord_type = 'name'
     return Bossafy().get_user_input(chord, chord_type)
 
 @route('/chords')

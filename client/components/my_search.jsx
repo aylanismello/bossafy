@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Search, Grid, Header } from 'semantic-ui-react';
+import { CHORD_TYPES } from '../util/constants';
 
 export default class MySearch extends Component {
 	constructor(props) {
@@ -13,14 +14,27 @@ export default class MySearch extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (!this.props.chords && nextProps.chords) {
-			this.setState({
-				source: Object.keys(nextProps.chords).map(chord => {
-					return {
-						title: chord
-					};
-				})
-			});
+		if (
+			(!this.props.chords && nextProps.chords) ||
+			nextProps.chordType !== this.props.chordType
+		) {
+			if (nextProps.chordType === CHORD_TYPES.NAME) {
+				this.setState({
+					source: Object.keys(nextProps.chords).map(chord => {
+						return {
+							title: chord
+						};
+					})
+				});
+			} else {
+				this.setState({
+					source: Object.keys(nextProps.chords).map(chord => {
+						return {
+							title: nextProps[chord]
+						};
+					})
+				});
+			}
 		}
 	}
 
@@ -34,7 +48,7 @@ export default class MySearch extends Component {
 
 	handleResultSelect(e, { result }) {
 		this.setState({ value: result.title });
-    this.props.fetchNextChord(result.title);
+		this.props.fetchNextChord(result.title);
 	}
 
 	handleSearchChange(e, { value }) {

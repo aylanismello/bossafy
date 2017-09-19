@@ -6,8 +6,11 @@ const NextChord = ({ chord, currentChord, fetchNextChordAgain }) => (
 		<h1>Next Chord for {currentChord}</h1>
 		<h2>{chord.name}</h2>
 		<h3> {chord.tab} </h3>
-		<Button basic color="teal" onClick={() => fetchNextChordAgain()}>
+		<Button basic color="teal" onClick={() => fetchNextChordAgain.fromCurrent()}>
 			Try Again
+		</Button>
+		<Button basic color="teal" onClick={() => fetchNextChordAgain.fromNext()}>
+			Try With {chord.name}
 		</Button>
 	</Segment>
 );
