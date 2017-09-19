@@ -132,42 +132,46 @@ class App extends React.Component {
 					fetchNextChord={currentChord => this.fetchNextChord(currentChord)}
 				/>
 
-				<Container>
-					<span> Search by chord </span>
+				<Segment>
+					<Container>
+						<span> Search by chord </span>
 
-					<Button
-						toggle
-						className="bossafy-button"
-						active={this.state.chordType === CHORD_TYPES.NAME}
-						style={
-							this.state.chordType === CHORD_TYPES.NAME
-								? selectedButtonStyle
-								: {}
-						}
-						basic
-						color="teal"
-						onClick={() => this.toggleChordType(CHORD_TYPES.NAME)}
-					>
-						NAME
-					</Button>
-					<Button
-						toggle
-						className="bossafy-button"
-						active={this.state.chordType === CHORD_TYPES.TAB}
-						style={
-							this.state.chordType === CHORD_TYPES.TAB
-								? selectedButtonStyle
-								: {}
-						}
-						basic
-						color="teal"
-						onClick={() =>
-							this.toggleChordType(CHORD_TYPES.TAB) ? selectedButtonStyle : {}}
-					>
-						TAB
-					</Button>
+						<Button
+							toggle
+							className="bossafy-button"
+							active={this.state.chordType === CHORD_TYPES.NAME}
+							style={
+								this.state.chordType === CHORD_TYPES.NAME
+									? selectedButtonStyle
+									: {}
+							}
+							basic
+							color="teal"
+							onClick={() => this.toggleChordType(CHORD_TYPES.NAME)}
+						>
+							NAME
+						</Button>
+						<Button
+							toggle
+							className="bossafy-button"
+							active={this.state.chordType === CHORD_TYPES.TAB}
+							style={
+								this.state.chordType === CHORD_TYPES.TAB
+									? selectedButtonStyle
+									: {}
+							}
+							basic
+							color="teal"
+							onClick={() =>
+								this.toggleChordType(CHORD_TYPES.TAB)
+									? selectedButtonStyle
+									: {}}
+						>
+							TAB
+						</Button>
 
-				</Container>
+					</Container>
+				</Segment>
 
 				<label> Need help picking a chord to start with ?</label>
 				<ChordsTable
