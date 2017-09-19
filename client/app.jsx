@@ -125,17 +125,15 @@ class App extends React.Component {
 						/>
 					: null}
 
-				<label>Pick Chord!</label>
-				<MySearch
-					chords={this.state.chords}
-					chordType={this.state.chordType}
-					fetchNextChord={currentChord => this.fetchNextChord(currentChord)}
-				/>
-
 				<Segment>
-					<Container>
-						<span> Search by chord </span>
+					<label>Pick Chord!</label>
+					<MySearch
+						chordDict={this.state.chords}
+						chordType={this.state.chordType}
+						fetchNextChord={currentChord => this.fetchNextChord(currentChord)}
+					/>
 
+					<Container>
 						<Button
 							toggle
 							className="bossafy-button"

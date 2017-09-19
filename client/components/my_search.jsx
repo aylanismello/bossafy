@@ -18,20 +18,21 @@ export default class MySearch extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (
-			(!this.props.chords && nextProps.chords) ||
+			(!this.props.chordDict && nextProps.chordDict) ||
 			nextProps.chordType !== this.props.chordType
 		) {
 			if (nextProps.chordType === CHORD_TYPES.NAME) {
 				this.setState({
-					source: Object.keys(nextProps.chords).map(chord => {
+					source: Object.keys(nextProps.chordDict).map(chord => {
 						return {
-							title: chord
+							title: chord,
+							description: nextProps.chordDict[chord]
 						};
 					})
 				});
 			} else {
 				this.setState({
-					source: Object.keys(nextProps.chords).map(chord => {
+					source: Object.keys(nextProps.chordDict).map(chord => {
 						return {
 							title: nextProps[chord]
 						};
