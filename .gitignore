@@ -5,3 +5,4 @@ node_modules/
 client/bundle.js*
 .sass-cache/
 Untitled.ipynb
+.DS_Store

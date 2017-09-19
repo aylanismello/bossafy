@@ -12,7 +12,7 @@ Welcome to 21st century python folks 🐍🚀, make sure you have pipenv install
 
 Then let's install our node dependencies ❤️
 
-``` npm install ```
+``` npm install / yarn install ```
 
 
 Then, install some flavor of [foreman](https://github.com/ddollar/foreman).
