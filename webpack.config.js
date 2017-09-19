@@ -15,15 +15,6 @@ module.exports = {
     module: {
       loaders: [
         { loader:  'babel-loader?presets[]=es2015,presets[]=react,plugins[]=transform-object-rest-spread&retainLines=true' }
-        // {
-        //   test: /.jsx?$/,
-        //   exclude: /(node_modules|bower_components)/,
-        //   loaders: [
-        //     'babel-loader?presets[]=es2015,presets[]=react,plugins[]=transform-object-rest-spread&retainLines=true',
-        //     'ng-annotate-loader'
-        //   ]
-        // },
-
       ]
     },
 };

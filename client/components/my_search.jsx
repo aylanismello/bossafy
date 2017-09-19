@@ -1,7 +1,10 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Search, Grid, Header } from 'semantic-ui-react';
-import { CHORD_TYPES } from '../util/constants';
+const CHORD_TYPES = {
+	NAME: 'NAME',
+	TAB: 'TAB'
+};
 
 export default class MySearch extends Component {
 	constructor(props) {

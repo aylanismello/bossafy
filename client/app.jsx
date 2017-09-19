@@ -17,7 +17,11 @@ import {
 import ChordsTable from './components/chords_table';
 import NextChord from './components/next_chord';
 import MySearch from './components/my_search';
-import { CHORD_TYPES } from './util/constants';
+
+const CHORD_TYPES = {
+	NAME: 'NAME',
+	TAB: 'TAB'
+};
 
 const LoaderExampleLoader = ({ loading }) => (
 	<Segment inverted style={{ height: '200px' }}>
